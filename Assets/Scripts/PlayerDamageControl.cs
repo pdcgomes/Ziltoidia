@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class PlayerDamageControl : MonoBehaviour
 {
+    public delegate void ShipDestroyedDelegate();
+    public event ShipDestroyedDelegate OnShipDestroyed;
+
     public float health = 100f;                 // The player's health.
     public float damagePerHit = 10f;            // The amount of damage to take when enemies touch the player
     
@@ -81,6 +84,7 @@ public class PlayerDamageControl : MonoBehaviour
     
     void Die()
     {
+        if(OnShipDestroyed != null) OnShipDestroyed();
         Destroy(gameObject);
     }
 }
