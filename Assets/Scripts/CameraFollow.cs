@@ -39,7 +39,6 @@ public class CameraFollow : MonoBehaviour
 				TrackPlayer();
 		}
 	
-	
 		void TrackPlayer()
 		{
 				// By default the target x and y coordinates of the camera are it's current x and y coordinates.
