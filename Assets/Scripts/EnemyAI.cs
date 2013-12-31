@@ -33,6 +33,7 @@ public class EnemyAI : MonoBehaviour
 
         chaseState.AddTransition(Transition.EnemyAITargetLockAcquired, StateID.EnemyAIAttack);
         chaseState.AddTransition(Transition.EnemyAITargetSightLost, StateID.EnemyAIPatrol);
+        chaseState.AddTransition(Transition.EnemyAITargetKilled, StateID.EnemyAIPatrol);
 //        chaseState.AddTransition(Transition.EnemyAIDamageReceived, StateID.EnemyAIEvasiveManeuver);
 
         attackState.AddTransition(Transition.EnemyAITargetLockLost, StateID.EnemyAIChase);
@@ -56,25 +57,14 @@ public class EnemyAI : MonoBehaviour
             Debug.DrawLine(transform.position, target.position, Color.white);
         }
 
-//		distance = Vector3.Distance(target.position, transform.position);
-//		if(distance < lookAtDistance) {
-//				LookAtTarget();
-//		}
-//		if(distance < attackRange) {
-//				//AttackTarget();
-//		} 
-//		else {
-//				renderer.material.color = Color.green;
-//		}
-
         FSM.Update();
 	}
 	
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.tag == "Player") {
-            target = collider.gameObject.transform;
             Debug.Log(string.Format("Collider {0} entered radar", collider.gameObject.tag));
+            target = collider.gameObject.transform;
             PerformTransition(Transition.EnemyAITargetInSight);
         }
     }
@@ -83,6 +73,7 @@ public class EnemyAI : MonoBehaviour
     {
         if(collider.gameObject.tag == "Player") {
             Debug.Log("Collider exited radar");
+            target = null;
             PerformTransition(Transition.EnemyAITargetSightLost);
         }
     }
@@ -101,17 +92,6 @@ public class EnemyAI : MonoBehaviour
 		renderer.material.color = Color.yellow;
 	}
 	
-    void ChaseTarget()
-    {
-
-    }
-
-    void AttackTarget()
-    {
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        renderer.material.color = Color.red;
-    }
-
     public void PerformTransition(Transition transition)
     {
         FSM.PerformTransition(transition);
