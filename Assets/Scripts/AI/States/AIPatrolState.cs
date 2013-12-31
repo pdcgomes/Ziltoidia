@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AIPatrolState : AIAbstractState
 {
@@ -41,10 +42,13 @@ public class AIPatrolState : AIAbstractState
     private void GenerateRandomPatrolPath()
     {
         Vector3 center = this.parentEntity.transform.position;
-        this.patrolAlongPath = new []{ 
-            new Vector3(center.x - this.patrolDistance, center.y + this.patrolDistance, 0),
-            new Vector3(center.x + this.patrolDistance, center.y + this.patrolDistance, 0), 
-            new Vector3(center.x + this.patrolDistance, center.y - this.patrolDistance, 0),
-            new Vector3(center.x - this.patrolDistance, center.y - this.patrolDistance, 0)};
+        
+        List<Vector3> path = new List<Vector3>();
+        path.Add(new Vector3(center.x - this.patrolDistance, center.y + this.patrolDistance, 0));
+        path.Add(new Vector3(center.x + this.patrolDistance, center.y + this.patrolDistance, 0));
+        path.Add(new Vector3(center.x + this.patrolDistance, center.y - this.patrolDistance, 0));
+        path.Add(new Vector3(center.x - this.patrolDistance, center.y - this.patrolDistance, 0));
+    
+        patrolAlongPath = path.ToArray();
     }
 }
