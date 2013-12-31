@@ -4,8 +4,11 @@ using System.Collections.Generic;
 
 public class ShipDamageControl : MonoBehaviour
 {
-    public delegate void ShipDestroyedDelegate();
+    public delegate void ShipDestroyedDelegate(GameObject ship);
+    public delegate void ShipTookDamageDelegate(GameObject ship);
+    
     public event ShipDestroyedDelegate OnShipDestroyed;
+    public event ShipTookDamageDelegate OnShipDamaged;
     
     public float health = 100f;                 // The player's health.
     public float damagePerHit = 10f;            // The amount of damage to take when enemies touch the player
@@ -15,6 +18,7 @@ public class ShipDamageControl : MonoBehaviour
     
     void Awake()
     {
+        Debug.Log("AWAKE!!");
         damageLevels = new SortedDictionary<float, string>();
         damageLevels.Add( 5f, "critical");
         damageLevels.Add(15f, "severe");
@@ -47,6 +51,7 @@ public class ShipDamageControl : MonoBehaviour
         ApplyDamage();
         UpdateHealthBar();
         UpdateAppearanceForCurrentDamage();
+        if(OnShipDamaged != null) OnShipDamaged(gameObject);
     }
     
     void ApplyDamage()
@@ -56,7 +61,7 @@ public class ShipDamageControl : MonoBehaviour
         }
         
         health -= damagePerHit;
-        Debug.Log(string.Format("Damage taken. Health = {0}", health));
+        Debug.Log(string.Format("[{0}] Damage taken. Health = {1}", gameObject.name, health));
         if(health <= 0) {
            Die();  
         }
@@ -84,7 +89,7 @@ public class ShipDamageControl : MonoBehaviour
     
     void Die()
     {
-        if(OnShipDestroyed != null) OnShipDestroyed();
+        if(OnShipDestroyed != null) OnShipDestroyed(gameObject);
         Destroy(gameObject);
     }
 }
