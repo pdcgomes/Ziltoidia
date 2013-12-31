@@ -14,4 +14,6 @@ public enum StateID
     EnemyAIAttack,
     EnemyAIFlee,
     EnemyAIEvasiveManeuver,
+    EnemyAISweepArea,
+    EnemyAIReturnHome,
 }

@@ -51,8 +51,10 @@ public class EnemyAI : MonoBehaviour
 	void Update()
 	{
         //Handles.DrawWireDisc(gameObject.transform.position, gameObject.transform.up, 10f);
-		Debug.DrawRay(target.transform.position, target.transform.up);
-		Debug.DrawLine(transform.position, target.position, Color.white);
+        if(target != null) {
+            Debug.DrawRay(target.transform.position, target.transform.up);
+            Debug.DrawLine(transform.position, target.position, Color.white);
+        }
 
 //		distance = Vector3.Distance(target.position, transform.position);
 //		if(distance < lookAtDistance) {
@@ -71,6 +73,7 @@ public class EnemyAI : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.tag == "Player") {
+            target = collider.gameObject.transform;
             Debug.Log(string.Format("Collider {0} entered radar", collider.gameObject.tag));
             PerformTransition(Transition.EnemyAITargetInSight);
         }
@@ -107,16 +110,6 @@ public class EnemyAI : MonoBehaviour
     {
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         renderer.material.color = Color.red;
-    }
-
-    void Flee()
-    {
-
-    }
-
-    void Patrol()
-    {
-
     }
 
     public void PerformTransition(Transition transition)
