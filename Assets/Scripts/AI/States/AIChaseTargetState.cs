@@ -14,14 +14,14 @@ public class AIChaseTargetState : AIAbstractState
     public override void DoBeforeEntering()
     {
         base.DoBeforeEntering();
-        this.parentEntity.target.gameObject.GetComponent<PlayerDamageControl>().OnShipDestroyed += OnTargetDestroyed;
+        this.parentEntity.target.gameObject.GetComponent<ShipDamageControl>().OnShipDestroyed += OnTargetDestroyed;
     }
 
     public override void DoBeforeLeaving()
     {
         base.DoBeforeLeaving();
         if(this.parentEntity.target != null) {
-            this.parentEntity.target.gameObject.GetComponent<PlayerDamageControl>().OnShipDestroyed -= OnTargetDestroyed;
+            this.parentEntity.target.gameObject.GetComponent<ShipDamageControl>().OnShipDestroyed -= OnTargetDestroyed;
         }
     }
 
@@ -45,7 +45,7 @@ public class AIChaseTargetState : AIAbstractState
         this.weapon.Fire();
     }
     
-    void OnTargetDestroyed()
+    void OnTargetDestroyed(GameObject ship)
     {
         Debug.Log("[AI] target destroyed!");
         this.parentEntity.target = null;
