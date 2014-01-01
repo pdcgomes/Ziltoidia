@@ -12,7 +12,8 @@ public class ShipDamageControl : MonoBehaviour
     
     public float health = 100f;                 // The player's health.
     public float damagePerHit = 10f;            // The amount of damage to take when enemies touch the player
-    
+    public GameObject explosion;
+      
     private Vector3 healthScale;                // The local scale of the health bar initially (with full health).
     private SortedDictionary<float, string> damageLevels;
     
@@ -91,5 +92,11 @@ public class ShipDamageControl : MonoBehaviour
     {
         if(OnShipDestroyed != null) OnShipDestroyed(gameObject);
         Destroy(gameObject);
+        Explode();
+    }
+    
+    void Explode()
+    {
+        Instantiate(explosion, transform.position, transform.rotation);
     }
 }
